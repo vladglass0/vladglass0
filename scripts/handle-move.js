@@ -350,6 +350,13 @@ function main() {
       comment('❌ The game is over. Start a new one from the README.');
       return;
     }
+    // No two moves in a row by the same player, so nobody plays both sides. The repo owner is exempt.
+    const last = g.history[g.history.length - 1];
+    const owner = repo.split('/')[0].toLowerCase();
+    if (last && last.by.toLowerCase() === author.toLowerCase() && author.toLowerCase() !== owner) {
+      comment(`❌ You made the last move, @${author}. Wait for someone else to play, then try again.`);
+      return;
+    }
 
     let row = -1;
     for (let r = ROWS - 1; r >= 0; r--) {
