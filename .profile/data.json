@@ -1,8 +1,8 @@
 {
- "key": "5284ba5",
+ "key": "c578ac50",
  "stars": 0,
- "contributions": 97,
- "repos": 30,
+ "contributions": 100,
+ "repos": 31,
  "followers": 0,
  "languages": [
   [
@@ -131,7 +131,7 @@
     "today": false
    },
    {
-    "c": 22,
+    "c": 25,
     "day": 22,
     "today": true
    },
@@ -152,6 +152,15 @@
    "fork": true,
    "stars": 2,
    "language": "C++",
+   "topics": []
+  },
+  {
+   "name": "portfolio",
+   "url": "https://github.com/vladglass0/portfolio",
+   "text": "A VSCode themed developer portfolio built using Next.js",
+   "fork": true,
+   "stars": 0,
+   "language": "TypeScript",
    "topics": []
   },
   {
