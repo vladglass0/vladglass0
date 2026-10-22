@@ -5,16 +5,16 @@
 <!-- GAME:START -->
 ## Community Connect Four
 
-**Game in progress.** It's 🔴's turn. Anyone can play the next move, just pick a column below.
+**Game in progress.** It's 🟡's turn. Anyone can play the next move, just pick a column below.
 
-| [**1**](https://github.com/vladglass0/vladglass0/issues/new?title=c4%7Cmove%7C1%7C88916&body=Just%20press%20'Submit%20new%20issue'.%20You%20don't%20need%20to%20do%20anything%20else.) | [**2**](https://github.com/vladglass0/vladglass0/issues/new?title=c4%7Cmove%7C2%7C88916&body=Just%20press%20'Submit%20new%20issue'.%20You%20don't%20need%20to%20do%20anything%20else.) | [**3**](https://github.com/vladglass0/vladglass0/issues/new?title=c4%7Cmove%7C3%7C88916&body=Just%20press%20'Submit%20new%20issue'.%20You%20don't%20need%20to%20do%20anything%20else.) | [**4**](https://github.com/vladglass0/vladglass0/issues/new?title=c4%7Cmove%7C4%7C88916&body=Just%20press%20'Submit%20new%20issue'.%20You%20don't%20need%20to%20do%20anything%20else.) | [**5**](https://github.com/vladglass0/vladglass0/issues/new?title=c4%7Cmove%7C5%7C88916&body=Just%20press%20'Submit%20new%20issue'.%20You%20don't%20need%20to%20do%20anything%20else.) | [**6**](https://github.com/vladglass0/vladglass0/issues/new?title=c4%7Cmove%7C6%7C88916&body=Just%20press%20'Submit%20new%20issue'.%20You%20don't%20need%20to%20do%20anything%20else.) | [**7**](https://github.com/vladglass0/vladglass0/issues/new?title=c4%7Cmove%7C7%7C88916&body=Just%20press%20'Submit%20new%20issue'.%20You%20don't%20need%20to%20do%20anything%20else.) |
+| [**1**](https://github.com/vladglass0/vladglass0/issues/new?title=c4%7Cmove%7C1%7C77339&body=Just%20press%20'Submit%20new%20issue'.%20You%20don't%20need%20to%20do%20anything%20else.) | [**2**](https://github.com/vladglass0/vladglass0/issues/new?title=c4%7Cmove%7C2%7C77339&body=Just%20press%20'Submit%20new%20issue'.%20You%20don't%20need%20to%20do%20anything%20else.) | [**3**](https://github.com/vladglass0/vladglass0/issues/new?title=c4%7Cmove%7C3%7C77339&body=Just%20press%20'Submit%20new%20issue'.%20You%20don't%20need%20to%20do%20anything%20else.) | [**4**](https://github.com/vladglass0/vladglass0/issues/new?title=c4%7Cmove%7C4%7C77339&body=Just%20press%20'Submit%20new%20issue'.%20You%20don't%20need%20to%20do%20anything%20else.) | [**5**](https://github.com/vladglass0/vladglass0/issues/new?title=c4%7Cmove%7C5%7C77339&body=Just%20press%20'Submit%20new%20issue'.%20You%20don't%20need%20to%20do%20anything%20else.) | [**6**](https://github.com/vladglass0/vladglass0/issues/new?title=c4%7Cmove%7C6%7C77339&body=Just%20press%20'Submit%20new%20issue'.%20You%20don't%20need%20to%20do%20anything%20else.) | [**7**](https://github.com/vladglass0/vladglass0/issues/new?title=c4%7Cmove%7C7%7C77339&body=Just%20press%20'Submit%20new%20issue'.%20You%20don't%20need%20to%20do%20anything%20else.) |
 | :-: | :-: | :-: | :-: | :-: | :-: | :-: |
 | ⚪ | ⚪ | ⚪ | ⚪ | ⚪ | ⚪ | ⚪ |
 | ⚪ | ⚪ | ⚪ | ⚪ | ⚪ | ⚪ | ⚪ |
 | ⚪ | ⚪ | ⚪ | ⚪ | ⚪ | ⚪ | ⚪ |
 | ⚪ | ⚪ | ⚪ | ⚪ | ⚪ | ⚪ | ⚪ |
 | ⚪ | ⚪ | ⚪ | ⚪ | ⚪ | ⚪ | ⚪ |
-| ⚪ | ⚪ | ⚪ | ⚪ | ⚪ | ⚪ | ⚪ |
+| ⚪ | 🔴 | ⚪ | ⚪ | ⚪ | ⚪ | ⚪ |
 
 Score: 🔴 0 · 🟡 0 · draws 0
 
@@ -27,11 +27,15 @@ Clicking a column opens a pre-filled GitHub Issue. Press "Submit new issue", and
 
 **Last moves**
 
-_No moves yet._
+| Move | Who |
+| --- | --- |
+| 🔴 column 2 | [@vladglass0](https://github.com/vladglass0) |
 
 **Top players**
 
-_Nobody yet. Be the first!_
+| Moves | Who |
+| --- | --- |
+| 1 | [@vladglass0](https://github.com/vladglass0) |
 <!-- GAME:END -->
 
 <picture><source media="(prefers-color-scheme: dark)" srcset="assets/social-l-dark.svg"><img src="assets/social-l-light.svg" width="41.723%" alt=""></picture><a href="https://discord.com/"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/social-1-dark.svg"><img src="assets/social-1-light.svg" width="16.552%" alt="discord"></picture></a><picture><source media="(prefers-color-scheme: dark)" srcset="assets/social-r-dark.svg"><img src="assets/social-r-light.svg" width="41.723%" alt=""></picture>
