@@ -1,6 +1,6 @@
 {
   "game": {
-    "id": "95358",
+    "id": "64290",
     "board": [
       [
         "_",
@@ -48,7 +48,7 @@
         "_"
       ],
       [
-        "_",
+        "R",
         "_",
         "_",
         "_",
@@ -57,10 +57,16 @@
         "_"
       ]
     ],
-    "turn": "R",
+    "turn": "Y",
     "status": "playing",
     "winner": null,
-    "history": []
+    "history": [
+      {
+        "col": 0,
+        "by": "vladglass0",
+        "color": "R"
+      }
+    ]
   },
   "wins": {
     "R": 0,
@@ -68,6 +74,6 @@
   },
   "draws": 0,
   "players": {
-    "vladglass0": 8
+    "vladglass0": 9
   }
 }
