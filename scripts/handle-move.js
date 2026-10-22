@@ -152,7 +152,44 @@ function boardSvg(state, t, font) {
     }
   }
 
-  const h = TOP + PITCH * ROWS + 24 + 16;
+  // "Last moves" and "Top players" tiles under the board, so the whole game is one card.
+  const y0 = TOP + PITCH * ROWS + 24 + 8;
+  const recent = g.history.slice(-5).reverse().map((m) => [
+    `<circle cx="36" r="10" fill="${t[m.color]}"/>`,
+    `Column ${m.col + 1}`,
+    `@${esc(m.by)}`,
+  ]);
+  const top = Object.entries(state.players)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5)
+    .map(([u, n], i) => [
+      `<circle cx="36" r="14" fill="${i ? t.hole : t.primary}"/><text x="36" y="5" fill="${i ? t.text : t.onPrimary}" text-anchor="middle" style="font-size:14px;font-weight:700">${i + 1}</text>`,
+      `@${esc(u)}`,
+      `${n} ${n === 1 ? 'move' : 'moves'}`,
+    ]);
+  const tiles = [
+    ['Last moves', recent, 'No moves yet.'],
+    ['Top players', top, 'Nobody yet. Be the first!'],
+  ]
+    .map(([title, rows, empty], i) => {
+      const tw = (W - 24) / 2;
+      const body = rows.length
+        ? rows
+            .map(
+              ([icon, main, side], k) =>
+                `<g transform="translate(0 ${84 + 44 * k})">${icon}<text x="62" y="5" fill="${t.text}" style="font-size:15px;font-weight:600">${main}</text>` +
+                `<text x="${tw - 24}" y="5" fill="${t.sub}" text-anchor="end" style="font-size:14px;font-weight:500">${side}</text></g>`,
+            )
+            .join('')
+        : `<text x="24" y="90" fill="${t.sub}" style="font-size:15px;font-weight:500">${empty}</text>`;
+      return (
+        `<g class="up" style="animation-delay:${0.25 + i * 0.08}s" transform="translate(${8 + i * (tw + 8)} ${y0})">` +
+        `<rect width="${tw}" height="300" rx="28" fill="${t.tile}"/><text x="24" y="44" fill="${t.text}" style="font-size:18px;font-weight:600">${title}</text>${body}</g>`
+      );
+    })
+    .join('');
+
+  const h = y0 + 300 + 56;
   return svg(
     W,
     h,
@@ -161,9 +198,17 @@ function boardSvg(state, t, font) {
       `<text x="32" y="54" fill="${t.text}" class="up" style="font-size:24px;font-weight:600">Community Connect Four</text>` +
       `<text x="32" y="84" fill="${t.sub}" class="up" style="font-size:15px;font-weight:500;animation-delay:.1s">${status}</text>` +
       header +
-      `<g class="up" style="animation-delay:.15s"><rect x="8" y="${TOP}" width="${W - 16}" height="${PITCH * ROWS + 24}" rx="28" fill="${t.tile}"/>${cells}</g>`,
+      `<g class="up" style="animation-delay:.15s"><rect x="8" y="${TOP}" width="${W - 16}" height="${PITCH * ROWS + 24}" rx="28" fill="${t.tile}"/>${cells}</g>` +
+      tiles +
+      `<text x="${W / 2}" y="${h - 22}" fill="${t.sub}" text-anchor="middle" class="up" style="font-size:13px;font-weight:500;animation-delay:.4s">A click opens a pre-filled issue. Submit it, and GitHub Actions plays your move.</text>`,
     font,
   );
+}
+
+// Logins are [A-Za-z0-9-], but they come from the event payload: escape anyway and keep them short.
+function esc(s) {
+  s = s.length > 20 ? s.slice(0, 19) + '…' : s;
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
 
 // One column button: a pill in the colour of the player to move, or a muted one when the column can't be played.
@@ -205,8 +250,9 @@ function writeAssets(state) {
   }
 }
 
-function picture(name, width, alt) {
-  return `<picture><source media="(prefers-color-scheme: dark)" srcset="${ASSETS}/${name}-dark.svg"><img src="${ASSETS}/${name}-light.svg" width="${width}" alt="${alt}"></picture>`;
+// GitHub serves repo images with a 5 min cache; the game id changes every move, so ?v= forces a fresh image.
+function picture(name, width, alt, v) {
+  return `<picture><source media="(prefers-color-scheme: dark)" srcset="${ASSETS}/${name}-dark.svg?v=${v}"><img src="${ASSETS}/${name}-light.svg?v=${v}" width="${width}" alt="${alt}"></picture>`;
 }
 
 function render(state) {
@@ -217,51 +263,15 @@ function render(state) {
   let controls;
   if (g.status === 'playing') {
     controls = Array.from({ length: COLS }, (_, c) => {
-      const pic = picture(`col-${c + 1}`, '14.285%', `Column ${c + 1}`);
+      const pic = picture(`col-${c + 1}`, '14.285%', `Column ${c + 1}`, g.id);
       return g.board[0][c] === '_' ? `<a href="${issueUrl(`c4|move|${c + 1}|${g.id}`)}">${pic}</a>` : pic;
     }).join('');
   } else {
-    controls = `<a href="${issueUrl(`c4|new|${g.id}`)}">${picture('new-game', 'auto', 'Start a new game')}</a>`;
+    controls = `<a href="${issueUrl(`c4|new|${g.id}`)}">${picture('new-game', 'auto', 'Start a new game', g.id)}</a>`;
   }
 
-  const recent = g.history.slice(-5).reverse();
-  const recentTable = recent.length
-    ? ['| Move | Who |', '| --- | --- |']
-        .concat(recent.map((m) => `| ${EMOJI[m.color]} column ${m.col + 1} | [@${m.by}](https://github.com/${m.by}) |`))
-        .join('\n')
-    : '_No moves yet._';
-
-  const top = Object.entries(state.players)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 5);
-  const topTable = top.length
-    ? ['| Moves | Who |', '| --- | --- |']
-        .concat(top.map(([u, n]) => `| ${n} | [@${u}](https://github.com/${u}) |`))
-        .join('\n')
-    : '_Nobody yet. Be the first!_';
-
-  return [
-    START,
-    controls,
-    '',
-    picture('board', '100%', 'Connect Four board'),
-    '',
-    '<details>',
-    '<summary>How this works</summary>',
-    '',
-    `Clicking a column opens a pre-filled GitHub Issue. Press "Submit new issue", and a GitHub Actions workflow plays the move and updates this README.`,
-    '',
-    '</details>',
-    '',
-    '**Last moves**',
-    '',
-    recentTable,
-    '',
-    '**Top players**',
-    '',
-    topTable,
-    END,
-  ].join('\n');
+  // Buttons and board on one line: the board wraps under the full-width button row with only a small gap.
+  return [START, controls + picture('board', '100%', 'Connect Four board', g.id), END].join('\n');
 }
 
 function writeReadme(block) {
