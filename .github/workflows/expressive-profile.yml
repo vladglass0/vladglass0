@@ -18,6 +18,32 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: metawka/expressive-profile@v1
+
+      # The action rewrites README.md from scratch and commits right away,
+      # so run only its renderer and put the Connect Four block back before committing.
+      - uses: actions/checkout@v4
         with:
-          token: ${{ secrets.PROFILE_TOKEN || github.token }}
+          repository: metawka/expressive-profile
+          ref: v1
+          path: .expressive-profile
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Render profile
+        run: node .expressive-profile/action/render.mjs
+        env:
+          GITHUB_TOKEN: ${{ secrets.PROFILE_TOKEN || github.token }}
+
+      - name: Restore the game block
+        run: node scripts/handle-move.js
+        env:
+          COMMENT_FILE: ${{ runner.temp }}/comment.md
+
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A assets README.md .profile game/state.json
+          git diff --cached --quiet || (git commit -m "Updated profile" && git push)
