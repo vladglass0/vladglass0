@@ -183,8 +183,9 @@ function boardSvg(state, t, font) {
             .join('')
         : `<text x="24" y="90" fill="${t.sub}" style="font-size:15px;font-weight:500">${empty}</text>`;
       return (
-        `<g class="up" style="animation-delay:${0.25 + i * 0.08}s" transform="translate(${8 + i * (tw + 8)} ${y0})">` +
-        `<rect width="${tw}" height="300" rx="28" fill="${t.tile}"/><text x="24" y="44" fill="${t.text}" style="font-size:18px;font-weight:600">${title}</text>${body}</g>`
+        // The animation's CSS transform would override a transform attribute on the same element, so position on an outer group.
+        `<g transform="translate(${8 + i * (tw + 8)} ${y0})"><g class="up" style="animation-delay:${0.25 + i * 0.08}s">` +
+        `<rect width="${tw}" height="300" rx="28" fill="${t.tile}"/><text x="24" y="44" fill="${t.text}" style="font-size:18px;font-weight:600">${title}</text>${body}</g></g>`
       );
     })
     .join('');
@@ -239,20 +240,23 @@ function newGameSvg(t, font) {
 function writeAssets(state) {
   const g = state.game;
   const font = profileFont();
+  // Only the current move's files are kept; old ones would just pile up in the repo.
+  fs.rmSync(ASSETS, { recursive: true, force: true });
   fs.mkdirSync(ASSETS, { recursive: true });
   for (const [mode, t] of Object.entries(THEMES)) {
-    fs.writeFileSync(`${ASSETS}/board-${mode}.svg`, boardSvg(state, t, font));
-    fs.writeFileSync(`${ASSETS}/new-game-${mode}.svg`, newGameSvg(t, font));
+    fs.writeFileSync(`${ASSETS}/board-${g.id}-${mode}.svg`, boardSvg(state, t, font));
+    fs.writeFileSync(`${ASSETS}/new-game-${g.id}-${mode}.svg`, newGameSvg(t, font));
     for (let c = 0; c < COLS; c++) {
       const open = g.status === 'playing' && g.board[0][c] === '_';
-      fs.writeFileSync(`${ASSETS}/col-${c + 1}-${mode}.svg`, columnSvg(t, open && g.turn));
+      fs.writeFileSync(`${ASSETS}/col-${c + 1}-${g.id}-${mode}.svg`, columnSvg(t, open && g.turn));
     }
   }
 }
 
-// GitHub serves repo images with a 5 min cache; the game id changes every move, so ?v= forces a fresh image.
+// GitHub redirects repo images to raw.githubusercontent.com (5 min cache) and drops any ?query,
+// so the game id, which changes every move, goes into the file name instead.
 function picture(name, width, alt, v) {
-  return `<picture><source media="(prefers-color-scheme: dark)" srcset="${ASSETS}/${name}-dark.svg?v=${v}"><img src="${ASSETS}/${name}-light.svg?v=${v}" width="${width}" alt="${alt}"></picture>`;
+  return `<picture><source media="(prefers-color-scheme: dark)" srcset="${ASSETS}/${name}-${v}-dark.svg"><img src="${ASSETS}/${name}-${v}-light.svg" width="${width}" alt="${alt}"></picture>`;
 }
 
 function render(state) {
