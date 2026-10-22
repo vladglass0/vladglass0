@@ -73,34 +73,155 @@ function issueUrl(t) {
   return `https://github.com/${repo}/issues/new?title=${encodeURIComponent(t)}&body=${encodeURIComponent(body)}`;
 }
 
-function render(state) {
-  const g = state.game;
-  const playing = g.status === 'playing';
+// Material 3 colours taken from the Expressive Profile cards (seed #B36CFF), plus red/yellow pieces in the same tones.
+const THEMES = {
+  light: {
+    bg: '#fbf0ff', tile: '#efe5f3', hole: '#eadfed', text: '#1f1924', sub: '#4c4452',
+    primary: '#8700ec', onPrimary: '#ffffff',
+    R: '#ba1a1a', onR: '#ffffff', Y: '#f2b705', onY: '#3d2e00',
+  },
+  dark: {
+    bg: '#1f1924', tile: '#2d2832', hole: '#38323d', text: '#eadfed', sub: '#cec2d4',
+    primary: '#dcb8ff', onPrimary: '#480082',
+    R: '#ff8a80', onR: '#690005', Y: '#ffd65c', onY: '#3d2e00',
+  },
+};
+const NAME = { R: 'Red', Y: 'Yellow' };
+const ASSETS = 'game/assets';
+const W = 840;
+const CELL = W / COLS; // column buttons above the board use the same width, so they line up
+const PITCH = 100;
+const TOP = 120;
 
-  let statusLine;
-  if (g.status === 'won') {
-    statusLine = `**Game over. ${EMOJI[g.winner]} wins!** [Start a new game](${issueUrl(`c4|new|${g.id}`)})`;
-  } else if (g.status === 'draw') {
-    statusLine = `**Game over. It's a draw.** [Start a new game](${issueUrl(`c4|new|${g.id}`)})`;
-  } else {
-    statusLine = `**Game in progress.** It's ${EMOJI[g.turn]}'s turn. Anyone can play the next move, just pick a column below.`;
+// Reuse the Expressive Profile font so the board matches the other cards; falls back to system fonts.
+function profileFont() {
+  try {
+    return fs.readFileSync('assets/hero-light.svg', 'utf8').match(/@font-face\{[^}]*\}/)[0];
+  } catch {
+    return '';
+  }
+}
+
+function svg(w, h, label, body, font = '') {
+  return (
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" role="img" aria-label="${label}"><title>${label}</title>` +
+    `<style>${font}text{font-family:G,'Google Sans','Segoe UI',Roboto,sans-serif;font-variation-settings:'ROND' 100}` +
+    `.up{animation:up .8s cubic-bezier(.05,.7,.1,1) both}` +
+    `.pop{transform-box:fill-box;transform-origin:center;animation:pop .6s cubic-bezier(.34,1.56,.64,1) .3s both}` +
+    `@keyframes up{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}` +
+    `@keyframes pop{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:scale(1)}}` +
+    `@media (prefers-reduced-motion:reduce){*{animation:none!important}}</style>${body}</svg>\n`
+  );
+}
+
+function boardSvg(state, t, font) {
+  const g = state.game;
+  let status;
+  if (g.status === 'won') status = `${NAME[g.winner]} wins! Start a new game above.`;
+  else if (g.status === 'draw') status = `It's a draw. Start a new game above.`;
+  else status = `${NAME[g.turn]}'s turn. Anyone can play, pick a column above.`;
+
+  // Score chips, right-aligned in the header.
+  const chips = [
+    [`<circle cx="22" cy="20" r="8" fill="${t.R}"/>`, state.wins.R, 80],
+    [`<circle cx="22" cy="20" r="8" fill="${t.Y}"/>`, state.wins.Y, 80],
+    [`<text x="16" y="26" fill="${t.sub}" style="font-size:15px;font-weight:500">Draws</text>`, state.draws, 104],
+  ];
+  let x = W - 32 - chips.reduce((s, c) => s + c[2] + 8, -8);
+  let header = '';
+  for (const [icon, n, w] of chips) {
+    header += `<g transform="translate(${x} 34)"><rect width="${w}" height="40" rx="20" fill="${t.tile}"/>${icon}<text x="${w - 18}" y="27" fill="${t.text}" text-anchor="end" style="font-size:18px;font-weight:700">${n}</text></g>`;
+    x += w + 8;
   }
 
-  const header = [];
-  for (let c = 0; c < COLS; c++) {
-    const full = g.board[0][c] !== '_';
-    if (playing && !full) {
-      header.push(`[**${c + 1}**](${issueUrl(`c4|move|${c + 1}|${g.id}`)})`);
-    } else {
-      header.push(`${c + 1}`);
+  const last = g.history[g.history.length - 1];
+  const lastRow = last ? g.board.findIndex((row) => row[last.col] !== '_') : -1;
+  let cells = '';
+  for (let r = 0; r < ROWS; r++) {
+    for (let c = 0; c < COLS; c++) {
+      const cx = CELL * c + CELL / 2;
+      const cy = TOP + 12 + PITCH * r + PITCH / 2;
+      const p = g.board[r][c];
+      if (p === '_') {
+        cells += `<circle cx="${cx}" cy="${cy}" r="40" fill="${t.hole}"/>`;
+      } else if (last && r === lastRow && c === last.col) {
+        cells += `<g class="pop"><circle cx="${cx}" cy="${cy}" r="44" fill="none" stroke="${t.primary}" stroke-width="4"/><circle cx="${cx}" cy="${cy}" r="36" fill="${t[p]}"/></g>`;
+      } else {
+        cells += `<circle cx="${cx}" cy="${cy}" r="40" fill="${t[p]}"/>`;
+      }
     }
   }
 
-  const lines = [];
-  lines.push(`| ${header.join(' | ')} |`);
-  lines.push(`| ${Array(COLS).fill(':-:').join(' | ')} |`);
-  for (let r = 0; r < ROWS; r++) {
-    lines.push(`| ${g.board[r].map((x) => EMOJI[x]).join(' | ')} |`);
+  const h = TOP + PITCH * ROWS + 24 + 16;
+  return svg(
+    W,
+    h,
+    `Connect Four. ${status}`,
+    `<rect width="${W}" height="${h}" rx="32" fill="${t.bg}"/>` +
+      `<text x="32" y="54" fill="${t.text}" class="up" style="font-size:24px;font-weight:600">Community Connect Four</text>` +
+      `<text x="32" y="84" fill="${t.sub}" class="up" style="font-size:15px;font-weight:500;animation-delay:.1s">${status}</text>` +
+      header +
+      `<g class="up" style="animation-delay:.15s"><rect x="8" y="${TOP}" width="${W - 16}" height="${PITCH * ROWS + 24}" rx="28" fill="${t.tile}"/>${cells}</g>`,
+    font,
+  );
+}
+
+// One column button: a pill in the colour of the player to move, or a muted one when the column can't be played.
+function columnSvg(t, color) {
+  const fill = color ? t[color] : t.tile;
+  const ink = color ? t[`on${color}`] : t.sub;
+  const cx = CELL / 2;
+  return svg(
+    CELL,
+    64,
+    color ? 'Drop a piece here' : 'Column unavailable',
+    `<rect x="12" y="8" width="${CELL - 24}" height="48" rx="24" fill="${fill}"${color ? '' : ' opacity=".6"'}/>` +
+      `<path d="M${cx} 21v20m-8-8l8 8l8-8" fill="none" stroke="${ink}" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"${color ? '' : ' opacity=".5"'}/>`,
+  );
+}
+
+function newGameSvg(t, font) {
+  return svg(
+    240,
+    56,
+    'Start a new game',
+    `<g class="pop"><rect width="240" height="56" rx="28" fill="${t.primary}"/><path d="M40 28h16m-8-8v16" stroke="${t.onPrimary}" stroke-width="3.5" stroke-linecap="round"/>` +
+      `<text x="72" y="34" fill="${t.onPrimary}" style="font-size:17px;font-weight:600">Start a new game</text></g>`,
+    font,
+  );
+}
+
+function writeAssets(state) {
+  const g = state.game;
+  const font = profileFont();
+  fs.mkdirSync(ASSETS, { recursive: true });
+  for (const [mode, t] of Object.entries(THEMES)) {
+    fs.writeFileSync(`${ASSETS}/board-${mode}.svg`, boardSvg(state, t, font));
+    fs.writeFileSync(`${ASSETS}/new-game-${mode}.svg`, newGameSvg(t, font));
+    for (let c = 0; c < COLS; c++) {
+      const open = g.status === 'playing' && g.board[0][c] === '_';
+      fs.writeFileSync(`${ASSETS}/col-${c + 1}-${mode}.svg`, columnSvg(t, open && g.turn));
+    }
+  }
+}
+
+function picture(name, width, alt) {
+  return `<picture><source media="(prefers-color-scheme: dark)" srcset="${ASSETS}/${name}-dark.svg"><img src="${ASSETS}/${name}-light.svg" width="${width}" alt="${alt}"></picture>`;
+}
+
+function render(state) {
+  const g = state.game;
+  writeAssets(state);
+
+  // No whitespace between the buttons, so the 7 images sit exactly over the 7 board columns.
+  let controls;
+  if (g.status === 'playing') {
+    controls = Array.from({ length: COLS }, (_, c) => {
+      const pic = picture(`col-${c + 1}`, '14.285%', `Column ${c + 1}`);
+      return g.board[0][c] === '_' ? `<a href="${issueUrl(`c4|move|${c + 1}|${g.id}`)}">${pic}</a>` : pic;
+    }).join('');
+  } else {
+    controls = `<a href="${issueUrl(`c4|new|${g.id}`)}">${picture('new-game', 'auto', 'Start a new game')}</a>`;
   }
 
   const recent = g.history.slice(-5).reverse();
@@ -121,13 +242,9 @@ function render(state) {
 
   return [
     START,
-    '## Community Connect Four',
+    controls,
     '',
-    statusLine,
-    '',
-    lines.join('\n'),
-    '',
-    `Score: 🔴 ${state.wins.R} · 🟡 ${state.wins.Y} · draws ${state.draws}`,
+    picture('board', '100%', 'Connect Four board'),
     '',
     '<details>',
     '<summary>How this works</summary>',
