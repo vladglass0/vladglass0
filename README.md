@@ -8,7 +8,7 @@
 
 <picture><source media="(prefers-color-scheme: dark)" srcset="assets/social-l-dark.svg"><img src="assets/social-l-light.svg" width="41.723%" alt=""></picture><a href="https://discord.com/users/1094511004416745573"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/social-1-dark.svg"><img src="assets/social-1-light.svg" width="16.552%" alt="discord"></picture></a><picture><source media="(prefers-color-scheme: dark)" srcset="assets/social-r-dark.svg"><img src="assets/social-r-light.svg" width="41.723%" alt=""></picture>
 
-<picture><source media="(prefers-color-scheme: dark)" srcset="assets/stack-dark.svg"><img src="assets/stack-light.svg" width="100%" alt="About me"></picture>
+<picture><source media="(prefers-color-scheme: dark)" srcset="assets/stack-dark.svg"><img src="assets/stack-light.svg" width="100%" alt="Tech stack"></picture>
 
 <a href="https://github.com/vladglass0/id-cooling_lcd"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/project-id-cooling-lcd-dark.svg"><img src="assets/project-id-cooling-lcd-light.svg" width="49%" alt="id-cooling_lcd"></picture></a>&nbsp;<a href="https://github.com/vladglass0/ltscheck"><picture><source media="(prefers-color-scheme: dark)" srcset="assets/project-ltscheck-dark.svg"><img src="assets/project-ltscheck-light.svg" width="49%" alt="ltscheck"></picture></a>
 
