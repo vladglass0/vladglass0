@@ -55,37 +55,69 @@
     ]
   },
   "stack": {
-  "title": "About me",
-  "groups": [
-    {
-      "title": "Languages",
-      "items": [
-        { "icon": "brand:go", "label": "Golang" },
-        { "icon": "coffee", "label": "Java" },
-        { "icon": "brand:python", "label": "Python" },
-        { "icon": "brand:typescript", "label": "TypeScript" },
-        { "icon": "brand:javascript", "label": "JavaScript" }
-      ]
-    },
-    {
-      "title": "Tools",
-      "items": [
-        { "icon": "brand:git", "label": "Git" },
-        { "icon": "brand:claudecode", "label": "Claude Code" },
-        { "icon": "brand:vim", "label": "NeoVim" },
-        { "icon": "brand:docker", "label": "Docker" },
-        { "icon": "brand:nodejs", "label": "Node.js" },
-        { "icon": "brand:vercel", "label": "Vercel" }
-      ]
-    },
-    {
-      "title": "Operating system",
-      "items": [
-        { "icon": "brand:archlinux", "label": "I use arch, btw!" }
-      ]
-    }
-  ]
-},
+    "title": "Tech stack",
+    "groups": [
+      {
+        "title": "Languages",
+        "items": [
+          {
+            "icon": "brand:python",
+            "label": "Python"
+          },
+          {
+            "icon": "brand:go",
+            "label": "GoLang"
+          },
+          {
+            "icon": "coffee",
+            "label": "Java"
+          },
+          {
+            "icon": "brand:typescript",
+            "label": "TypeScript"
+          }
+        ]
+      },
+      {
+        "title": "Tools",
+        "items": [
+          {
+            "icon": "brand:git",
+            "label": "Git"
+          },
+          {
+            "icon": "brand:claudecode",
+            "label": "Claude Code"
+          },
+          {
+            "icon": "brand:neovim",
+            "label": "NeoVim"
+          },
+          {
+            "icon": "brand:docker",
+            "label": "Docker"
+          },
+          {
+            "icon": "brand:nodedotjs",
+            "label": "Node.js"
+          },
+          {
+            "icon": "brand:vercel",
+            "label": "Vercel"
+          }
+        ]
+      },
+      {
+        "title": "Operating System",
+        "items": [
+          {
+            "icon": "brand:archlinux",
+            "label": "I use arch, btw!"
+          }
+        ]
+      }
+    ]
+  },
   "projects": {
     "source": "manual",
     "repos": [
