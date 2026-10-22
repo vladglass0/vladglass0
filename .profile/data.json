@@ -1,7 +1,7 @@
 {
- "key": "e796d238",
+ "key": "aad5ebe6",
  "stars": 0,
- "contributions": 83,
+ "contributions": 94,
  "repos": 30,
  "followers": 0,
  "languages": [
@@ -18,12 +18,12 @@
    153376
   ],
   [
-   "Go",
-   31260
+   "JavaScript",
+   31864
   ],
   [
-   "JavaScript",
-   29562
+   "Go",
+   31260
   ],
   [
    "CSS",
@@ -131,7 +131,7 @@
     "today": false
    },
    {
-    "c": 8,
+    "c": 19,
     "day": 22,
     "today": true
    },
