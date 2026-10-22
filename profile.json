@@ -23,7 +23,7 @@
   "hero": {
     "greeting": "Hi, I'm",
     "name": "RtxBB",
-    "subtitle": "I build interfaces and small useful and not so useful tools.",
+    "subtitle": "I build small useful and not so useful tools.",
     "typing": true,
     "avatarShape": "cookie12",
     "chips": [
