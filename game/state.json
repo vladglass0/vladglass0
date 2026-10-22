@@ -1,6 +1,6 @@
 {
   "game": {
-    "id": "27081",
+    "id": "95358",
     "board": [
       [
         "_",
@@ -41,67 +41,26 @@
       [
         "_",
         "_",
-        "R",
-        "R",
-        "R",
+        "_",
+        "_",
+        "_",
         "_",
         "_"
       ],
       [
         "_",
-        "R",
-        "Y",
-        "Y",
-        "Y",
-        "Y",
+        "_",
+        "_",
+        "_",
+        "_",
+        "_",
         "_"
       ]
     ],
-    "turn": "Y",
-    "status": "won",
-    "winner": "Y",
-    "history": [
-      {
-        "col": 1,
-        "by": "vladglass0",
-        "color": "R"
-      },
-      {
-        "col": 2,
-        "by": "vladglass0",
-        "color": "Y"
-      },
-      {
-        "col": 2,
-        "by": "vladglass0",
-        "color": "R"
-      },
-      {
-        "col": 3,
-        "by": "vladglass0",
-        "color": "Y"
-      },
-      {
-        "col": 3,
-        "by": "vladglass0",
-        "color": "R"
-      },
-      {
-        "col": 4,
-        "by": "vladglass0",
-        "color": "Y"
-      },
-      {
-        "col": 4,
-        "by": "vladglass0",
-        "color": "R"
-      },
-      {
-        "col": 5,
-        "by": "vladglass0",
-        "color": "Y"
-      }
-    ]
+    "turn": "R",
+    "status": "playing",
+    "winner": null,
+    "history": []
   },
   "wins": {
     "R": 0,
