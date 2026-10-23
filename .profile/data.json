@@ -1,8 +1,8 @@
 {
- "key": "6a8aeeef",
+ "key": "c0175aff",
  "stars": 0,
- "contributions": 100,
- "repos": 31,
+ "contributions": 99,
+ "repos": 30,
  "followers": 0,
  "languages": [
   [
@@ -79,7 +79,7 @@
     "today": false
    },
    {
-    "c": 1,
+    "c": 0,
     "day": 12,
     "today": false
    },
@@ -174,15 +174,6 @@
    "fork": false,
    "stars": 0,
    "language": "JavaScript",
-   "topics": []
-  },
-  {
-   "name": "kvant",
-   "url": "https://github.com/vladglass0/kvant",
-   "text": "",
-   "fork": false,
-   "stars": 0,
-   "language": null,
    "topics": []
   },
   {
