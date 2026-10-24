@@ -1,5 +1,5 @@
 {
- "key": "c0175aff",
+ "key": "d3de0bbf",
  "stars": 0,
  "contributions": 99,
  "repos": 30,
@@ -138,13 +138,17 @@
    {
     "c": 0,
     "day": 23,
-    "today": true
+    "today": false
    },
-   null
+   {
+    "c": 0,
+    "day": 24,
+    "today": true
+   }
   ]
  ],
  "streak": {
-  "current": 1,
+  "current": 0,
   "longest": 4
  },
  "pins": [],
