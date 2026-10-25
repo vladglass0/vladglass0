@@ -1,7 +1,7 @@
 {
- "key": "c9c305e7",
+ "key": "36a8c85b",
  "stars": 0,
- "contributions": 104,
+ "contributions": 105,
  "repos": 32,
  "followers": 0,
  "languages": [
@@ -18,16 +18,16 @@
    153376
   ],
   [
+   "Kotlin",
+   35807
+  ],
+  [
    "JavaScript",
    31864
   ],
   [
    "Go",
    31260
-  ],
-  [
-   "Kotlin",
-   30836
   ],
   [
    "CSS",
@@ -111,7 +111,7 @@
   ],
   [
    {
-    "c": 2,
+    "c": 3,
     "day": 25,
     "today": true
    },
