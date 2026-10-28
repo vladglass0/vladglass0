@@ -1,5 +1,5 @@
 {
- "key": "98e88473",
+ "key": "3dfac712",
  "stars": 0,
  "contributions": 116,
  "repos": 34,
@@ -123,9 +123,13 @@
    {
     "c": 10,
     "day": 27,
+    "today": false
+   },
+   {
+    "c": 0,
+    "day": 28,
     "today": true
    },
-   null,
    null,
    null,
    null
